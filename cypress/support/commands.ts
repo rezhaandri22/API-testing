@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { response } from "express";
+import { response } from 'express';
 
 // ***********************************************
 // This example commands.ts shows you how to
@@ -39,64 +39,61 @@ import { response } from "express";
 //   }
 // }
 
-
 // @ts-ignore
 Cypress.Commands.add('resetUsers', () => {
-    cy.request('DELETE', '/auth/reset');
+  cy.request('DELETE', '/auth/reset');
 });
 
 //@ts-ignore
-Cypress.Commands.add('badRequest', (response: any, messages = []) => {
-    expect(response.status).to.eq(400);
-    expect(response.body.error).to.eq('Bad Request');
-    messages.forEach((message) => {
-        expect(message).to.be.oneOf(response.body.message);
-    });
+Cypress.Commands.add('badRequest', (response, messages = []) => {
+  expect(response.status).to.eq(400);
+  expect(response.body.error).to.eq('Bad Request');
+  messages.forEach((message) => {
+    expect(message).to.be.oneOf(response.body.message);
+  });
 });
 
 // @ts-ignore
-Cypress.Commands.add('unauthorized', (response:any) => {
-    expect(response.status).to.eq(401);
-    expect(response.body.message).to.eq('Unauthorized');
+Cypress.Commands.add('unauthorized', (response: any) => {
+  expect(response.status).to.eq(401);
+  expect(response.body.message).to.eq('Unauthorized');
 });
-
 
 //@ts-ignore
 Cypress.Commands.add('checkUnauthorized', (method, url) => {
-    cy.request({
-        method: method,
-        url: url,
-        headers: { 
-            authorization: null, 
-        },
-        failOnStatusCode: false, 
-    }).then((response) => {
-        cy.unauthorized(response); 
-    });
+  cy.request({
+    method: method,
+    url: url,
+    headers: {
+      authorization: null,
+    },
+    failOnStatusCode: false,
+  }).then((response) => {
+    cy.unauthorized(response);
+  });
 });
 
 Cypress.Commands.add('login', () => {
-    const userData = {
-        "name": "John Doe",
-        "email": "johnp@nest.test",
-        "password": "Secret_123",
-    }
-    cy.resetUsers()
-    
-    cy.request({
-        method: 'POST', 
-        url: '/auth/register',
-        body: userData,
-    })
-    cy.request({
-        method: 'POST',
-        url: '/auth/login',
-        body: {
-            email: userData.email,
-            password: userData.password,
-        },
-    }).then((response) => {
-        Cypress.env('token', response.body.data.access_token);
-    });
-})
+  const userData = {
+    name: 'John Doe',
+    email: 'johnp@nest.test',
+    password: 'Secret_123',
+  };
+  cy.resetUsers();
 
+  cy.request({
+    method: 'POST',
+    url: '/auth/register',
+    body: userData,
+  });
+  cy.request({
+    method: 'POST',
+    url: '/auth/login',
+    body: {
+      email: userData.email,
+      password: userData.password,
+    },
+  }).then((response) => {
+    Cypress.env('token', response.body.data.access_token);
+  });
+});
