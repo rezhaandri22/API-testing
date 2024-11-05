@@ -31,6 +31,10 @@ describe('Psot module', () => {
     });
 
     it('should return correct post', () => {
+      const mockPost = {
+        title: 'ini title',
+        content: 'content 1',
+      };
       cy.request({
         method: 'POST',
         url: '/posts',
@@ -38,13 +42,19 @@ describe('Psot module', () => {
           authorization: `Bearer ${Cypress.env('token')}`,
         },
         body: {
-          title: 'Ini title',
+          title: mockPost.title,
+          content: mockPost.content,
         },
       }).then((response) => {
-        cy.badRequest(response, [
-          'title must be a string',
-          'content must be a string',
-        ]);
+        const {
+          success,
+          data: { title, content, comments },
+        } = response.body;
+        expect(response.status).to.eq(201);
+        expect(success).to.be.true;
+        expect(title).to.eq(mockPost.title);
+        expect(content).to.eq(mockPost.content);
+        expect(comments.length).to.eq(0);
       });
     });
   });
