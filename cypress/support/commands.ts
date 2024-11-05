@@ -61,3 +61,18 @@ Cypress.Commands.add('unauthorized', (response:any) => {
 });
 
 
+//@ts-ignore
+Cypress.Commands.add('checkUnauthorized', (method, url) => {
+    cy.request({
+        method: method,
+        url: url,
+        headers: { 
+            authorization: null, 
+        },
+        failOnStatusCode: false, 
+    }).then((response) => {
+        cy.unauthorized(response); 
+    });
+});
+
+

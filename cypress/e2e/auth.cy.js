@@ -147,13 +147,7 @@ describe('Auth module', () => {
         })
 
         it('should return unauthorized when send no token', () => {
-            cy.request({
-                method: 'GET',
-                url: '/auth/me',
-                failOnStatusCode: false,
-              }).then((response) => {
-                cy.unauthorized(response)
-            })
+            cy.checkUnauthorized('GET', '/auth/me');
         })
         it('should return current data', () => {
             cy.request({
