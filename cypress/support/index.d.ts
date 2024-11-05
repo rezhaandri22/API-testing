@@ -1,4 +1,4 @@
-// Deklarasi tipe untuk custom commands Cypress
+// cypress/support/index.d.ts
 declare namespace Cypress {
     interface Chainable {
         /**
@@ -13,5 +13,15 @@ declare namespace Cypress {
          * @param url - URL endpoint
          */
         checkUnauthorized(method: string, url: string): Chainable<void>;
+
+        /**
+         * Custom command untuk login
+         */
+        login(): Chainable<void>;
+
+        /**
+         * Custom command untuk mereset pengguna
+         */
+        resetUsers(): Chainable<void>;
     }
 }

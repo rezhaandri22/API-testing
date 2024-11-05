@@ -126,24 +126,13 @@ describe('Auth module', () => {
             })
         })
     })
-    describe.only('Me', () => {
+    describe('Me', () => {
         /**
          * 1. unauthorized on Failed
          * 2. return access token on success
          */
         before('do login', () => {
-            // Lakukan login sebelum pengujian untuk mendapatkan token
-            cy.request({
-                method: 'POST',
-                url: '/auth/login',
-                body: {
-                    email: userData.email,
-                    password: userData.password,
-                },
-            }).then((response) => {
-                // Simpan token dari respons login ke Cypress.env
-                Cypress.env('token', response.body.data.access_token);
-            });
+         cy.login()
         })
 
         it('should return unauthorized when send no token', () => {
